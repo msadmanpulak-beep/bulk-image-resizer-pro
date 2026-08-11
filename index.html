@@ -832,7 +832,7 @@
     const rewardsLeft = MAX_REWARDS_PER_DAY - limitState.rewardsWatched;
     const rewardLabel = rewardsLeft <= 0
       ? '🎬 Daily reward limit reached'
-      : '🎬 Watch a short video to unlock +' + REWARD_BONUS + ' uploads';
+      : '🎬 Unlock +' + REWARD_BONUS + ' uploads';
 
     if (rewardBtn){
       rewardBtn.disabled = rewardsLeft <= 0;
