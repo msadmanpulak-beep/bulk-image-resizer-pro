@@ -530,6 +530,17 @@
     color:var(--text-2);
     box-shadow:none;
   }
+  .reward-btn-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+  }
+  .reward-note{
+    font-size:10.5px;
+    color:var(--text-2);
+    letter-spacing:.2px;
+  }
 
   /* Daily limit system: overlay + premium upgrade/reward modal */
   .modal-overlay{
@@ -669,7 +680,10 @@
       <button class="btn ghost sm" id="addMoreBtn" type="button">＋ Add more</button>
       <button class="btn ghost sm danger" id="clearAllBtn" type="button">🗑 Clear all</button>
       <!-- Daily limit system -->
-      <button class="btn reward-btn sm" id="rewardBtn" type="button">🎬 Watch a short video to unlock +20 uploads</button>
+      <div class="reward-btn-wrap">
+        <button class="btn reward-btn sm" id="rewardBtn" type="button">🎁 Unlock +20 Uploads</button>
+        <span class="reward-note">Opens a sponsor tab</span>
+      </div>
       <button class="btn primary" id="downloadZipBtn" type="button" disabled>⬇ Download all as ZIP</button>
     </div>
   </section>
@@ -704,7 +718,8 @@
       <div class="modal-progress-fill" id="limitModalProgressFill"></div>
     </div>
     <div class="modal-actions">
-      <button class="btn primary" id="limitModalRewardBtn" type="button">🎬 Watch a short video to unlock +20 uploads</button>
+      <button class="btn primary" id="limitModalRewardBtn" type="button">🎁 Unlock +20 Uploads</button>
+      <span class="reward-note">Opens a sponsor tab</span>
       <button class="btn ghost" id="limitModalCloseBtn" type="button">Maybe later</button>
     </div>
     <p class="modal-sub" id="limitModalSub">Rewards watched today: 0 / 5</p>
@@ -771,6 +786,7 @@
   const REWARD_BONUS       = 20;                  /* Daily limit system */
   const MAX_REWARDS_PER_DAY = 5;                  /* Daily limit system */
   const LIMIT_STORAGE_KEY  = 'pumitaDailyLimitV1'; /* Daily limit system */
+  const SPONSOR_DIRECT_LINK = 'https://omg10.com/4/11552624'; /* Daily limit system */
 
   let limitState = null; /* Daily limit system: { date, used, rewardsWatched } */
 
@@ -830,8 +846,8 @@
 
     const rewardsLeft = MAX_REWARDS_PER_DAY - limitState.rewardsWatched;
     const rewardLabel = rewardsLeft <= 0
-      ? '🎬 Daily reward limit reached'
-      : '🎬 Watch a short video to unlock +' + REWARD_BONUS + ' uploads';
+      ? '🎁 Daily reward limit reached'
+      : '🎁 Unlock +20 Uploads';
 
     if (rewardBtn){
       rewardBtn.disabled = rewardsLeft <= 0;
@@ -864,27 +880,28 @@
     limitModalOverlay.classList.remove('show');
   }
 
-  /* Daily limit system: placeholder rewarded-ad hook.
-     No real ad network is wired up yet — this simulates a
-     successful rewarded-video view after a 2 second delay so the
-     reward flow can be integrated with a real SDK later without
-     changing any of the calling code. */
+  /* Daily limit system: sponsor-unlock hook.
+     Opens the sponsor Direct Link in a new tab, then grants the
+     reward after a 5 second delay. This replaces the earlier fake
+     2-second simulated ad — no real ad-network SDK is wired in,
+     the sponsor visit is simply the opened tab. */
   function showRewardedAd(onComplete){
-    showToast('Playing rewarded video…');
+    window.open(SPONSOR_DIRECT_LINK, '_blank', 'noopener,noreferrer');
+    showToast('Sponsor page opened. Bonus will unlock in 5 seconds.');
     setTimeout(() => {
-      onComplete(true); // simulated ad always completes successfully
-    }, 2000);
+      onComplete(true); // reward is granted once the 5 second unlock timer elapses
+    }, 5000);
   }
 
   /* Daily limit system: handles a reward button click end-to-end
      (works whether triggered from the toolbar or from the modal) */
   function handleWatchReward(){
     if (limitState.rewardsWatched >= MAX_REWARDS_PER_DAY){
-      showToast('You already watched the max ' + MAX_REWARDS_PER_DAY + ' videos today.');
+      showToast('You already unlocked the max ' + MAX_REWARDS_PER_DAY + ' bonuses today.');
       return;
     }
 
-    const busyLabel = '⏳ Loading video…';
+    const busyLabel = '⏳ Unlocking…';
     if (rewardBtn){ rewardBtn.disabled = true; rewardBtn.innerHTML = busyLabel; }
     if (limitModalRewardBtn){ limitModalRewardBtn.disabled = true; limitModalRewardBtn.innerHTML = busyLabel; }
 
@@ -896,7 +913,7 @@
         showToast('+' + REWARD_BONUS + ' uploads unlocked! 🎉');
       } else {
         updateLimitUI();
-        showToast('Video was not completed — no reward granted.');
+        showToast('Sponsor unlock was not completed — no reward granted.');
       }
     });
   }
