@@ -6,7 +6,9 @@
      crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bulk Image Resizer Pro | PuMita Tech</title>
+<title>Bulk Image Resizer Pro – Free Online JPG, PNG & WEBP Resizer | PuMita Tech</title>
+<meta name="description" content="Resize, compress and convert JPG, PNG and WEBP images in bulk, right in your browser. No uploads, no accounts, no waiting — free, private and easy to use.">
+<meta name="theme-color" content="#0a0e17">
 
 <!-- JSZip is loaded from a CDN purely to build the "Download All" archive. Everything else runs 100% offline. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -502,117 +504,151 @@
   }
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto;}
 
-  /* Daily limit system */
-  .stat.remaining b{
-    transition:transform .25s var(--ease), color .25s var(--ease);
-    display:inline-block;
+  /* ---------- Content / article section ---------- */
+  .content-section{
+    position:relative;
+    z-index:1;
+    max-width:1280px;
+    margin:0 auto;
+    padding:10px 20px 20px;
   }
-  .stat.remaining b.pulse{
-    animation:limitStatPulse .5s var(--ease);
+  .content-card{
+    padding:34px clamp(20px,4vw,48px) 40px;
+    margin-bottom:0;
   }
-  @keyframes limitStatPulse{
-    0%{transform:scale(1);}
-    35%{transform:scale(1.28);color:var(--accent-a);}
-    100%{transform:scale(1);}
+  .content-card + .content-card{margin-top:22px;}
+  .content-card article{max-width:840px;margin:0 auto;}
+  .content-card h2{
+    font-size:24px;
+    font-weight:700;
+    margin:0 0 14px;
+    letter-spacing:.2px;
   }
-
-  .reward-btn{
-    background:linear-gradient(135deg, rgba(94,234,212,.18), rgba(139,123,255,.18));
-    border:1px solid rgba(94,234,212,.35);
+  .content-card > article > h2:not(:first-child),
+  .content-card .article-block h2{margin-top:38px;}
+  .content-card h3{
+    font-size:16.5px;
+    font-weight:700;
+    margin:22px 0 8px;
     color:var(--text-0);
   }
-  .reward-btn:hover:not([disabled]){
-    background:linear-gradient(135deg, rgba(94,234,212,.28), rgba(139,123,255,.28));
-    box-shadow:0 10px 26px -10px rgba(94,234,212,.5);
-  }
-  .reward-btn[disabled]{
-    background:var(--glass);
-    border-color:var(--glass-border);
-    color:var(--text-2);
-    box-shadow:none;
-  }
-
-  /* Daily limit system: overlay + premium upgrade/reward modal */
-  .modal-overlay{
-    position:fixed;
-    inset:0;
-    z-index:80;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    background:rgba(6,9,15,.62);
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
-    opacity:0;
-    pointer-events:none;
-    transition:opacity .28s var(--ease);
-  }
-  .modal-overlay.show{opacity:1;pointer-events:auto;}
-
-  .modal-card{
-    width:100%;
-    max-width:420px;
-    padding:30px 26px 26px;
-    text-align:center;
-    position:relative;
-    transform:translateY(18px) scale(.96);
-    opacity:0;
-    transition:transform .32s var(--ease), opacity .32s var(--ease);
-  }
-  .modal-overlay.show .modal-card{
-    transform:translateY(0) scale(1);
-    opacity:1;
-  }
-  .modal-close{
-    position:absolute;top:14px;right:14px;
-    width:30px;height:30px;
-    border-radius:50%;
-    border:1px solid var(--glass-border);
-    background:rgba(255,255,255,.05);
+  .content-card p{
+    font-size:14.5px;
+    line-height:1.75;
     color:var(--text-1);
-    font-size:14px;
-    cursor:pointer;
-    display:flex;align-items:center;justify-content:center;
-    transition:background .18s, color .18s, transform .18s;
+    margin:0 0 14px;
   }
-  .modal-close:hover{background:var(--danger);color:#1a0508;transform:scale(1.08);}
-  .modal-icon{
-    width:64px;height:64px;margin:0 auto 16px;
-    border-radius:18px;
+  .content-card ul, .content-card ol{
+    margin:0 0 16px;
+    padding-left:22px;
+    color:var(--text-1);
+    font-size:14.5px;
+    line-height:1.75;
+  }
+  .content-card li{margin-bottom:6px;}
+  .content-card strong{color:var(--text-0);}
+  .lede{
+    font-size:16px !important;
+    color:var(--text-0) !important;
+  }
+  .kicker{
+    display:inline-block;
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
     background:var(--accent-grad);
-    display:flex;align-items:center;justify-content:center;
-    font-size:28px;
-    box-shadow:0 16px 36px -10px rgba(139,123,255,.55);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    margin-bottom:8px;
   }
-  .modal-card h3{margin:0 0 8px;font-size:18px;font-weight:700;}
-  .modal-card p{margin:0 0 6px;color:var(--text-1);font-size:13.5px;line-height:1.55;}
-  .modal-progress{
-    margin:16px 0 20px;
-    height:8px;
-    border-radius:8px;
-    background:rgba(255,255,255,.08);
+
+  /* FAQ accordion */
+  .faq-list{display:flex;flex-direction:column;gap:10px;}
+  .faq-item{
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    background:rgba(255,255,255,.03);
     overflow:hidden;
   }
-  .modal-progress-fill{
-    height:100%;
-    width:0%;
-    background:var(--accent-grad);
-    border-radius:8px;
-    transition:width .4s var(--ease);
-  }
-  .modal-sub{
-    font-size:11.5px;
-    color:var(--text-2);
-    margin-top:14px;
-  }
-  .modal-actions{
+  .faq-item summary{
+    list-style:none;
+    cursor:pointer;
+    padding:15px 18px;
+    font-size:14.5px;
+    font-weight:600;
+    color:var(--text-0);
     display:flex;
-    flex-direction:column;
-    gap:10px;
-    margin-top:18px;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
   }
-  .modal-actions .btn{width:100%;justify-content:center;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{
+    content:"+";
+    flex-shrink:0;
+    width:22px;height:22px;
+    border-radius:50%;
+    background:var(--glass-strong);
+    display:flex;align-items:center;justify-content:center;
+    font-size:15px;
+    transition:transform .25s var(--ease);
+  }
+  .faq-item[open] summary::after{transform:rotate(45deg);}
+  .faq-item .faq-answer{
+    padding:0 18px 16px;
+    font-size:13.5px;
+    line-height:1.7;
+    color:var(--text-1);
+  }
+
+  /* Use-case cards */
+  .usecase-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+    margin:8px 0 18px;
+  }
+  .usecase-card{
+    padding:18px;
+    border-radius:var(--radius-md);
+    background:rgba(255,255,255,.035);
+    border:1px solid var(--line);
+  }
+  .usecase-card h3{margin:0 0 6px;font-size:14.5px;}
+  .usecase-card p{margin:0;font-size:13px;color:var(--text-2);}
+
+  /* ---------- Expanded footer ---------- */
+  footer.app-footer{
+    max-width:1280px;
+    margin:0 auto;
+    padding-top:36px;
+    border-top:1px solid var(--line);
+  }
+  footer.app-footer .footer-nav{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:22px;
+    margin-bottom:14px;
+  }
+  footer.app-footer .footer-nav a{
+    color:var(--text-1);
+    text-decoration:none;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.2px;
+    transition:color .18s;
+  }
+  footer.app-footer .footer-nav a:hover{color:var(--accent-a);}
+  footer.app-footer .footer-note{
+    color:var(--text-2);
+    font-size:11.5px;
+    max-width:640px;
+    margin:0 auto 10px;
+    line-height:1.6;
+  }
 
   /* ---------- Responsive ---------- */
   @media (max-width:640px){
@@ -623,6 +659,8 @@
     .toolbar{flex-direction:column;align-items:stretch;}
     .toolbar .left,.toolbar .right{justify-content:space-between;}
     .grid{grid-template-columns:1fr;}
+    .content-section{padding:6px 14px 14px;}
+    .content-card{padding:26px 18px 32px;}
   }
 </style>
 </head>
@@ -646,8 +684,6 @@
       <div class="stat"><span>Images</span><b id="statCount">0</b></div>
       <div class="stat"><span>Original</span><b id="statOriginal">0 KB</b></div>
       <div class="stat"><span>Estimated</span><b id="statEstimated">0 KB</b></div>
-      <!-- Daily limit system -->
-      <div class="stat remaining"><span>Remaining today</span><b id="statRemaining">100 / 100</b></div>
     </div>
   </header>
 
@@ -669,8 +705,6 @@
     <div class="right">
       <button class="btn ghost sm" id="addMoreBtn" type="button">＋ Add more</button>
       <button class="btn ghost sm danger" id="clearAllBtn" type="button">🗑 Clear all</button>
-      <!-- Daily limit system -->
-      <button class="btn reward-btn sm" id="rewardBtn" type="button">🎁 Unlock +20 Uploads</button>
       <button class="btn primary" id="downloadZipBtn" type="button" disabled>⬇ Download all as ZIP</button>
     </div>
   </section>
@@ -686,31 +720,148 @@
 
 </div>
 
+<!-- ===================== ARTICLE / CONTENT SECTION ===================== -->
+<div class="content-section">
+  <div class="content-card glass">
+    <article>
+
+      <span class="kicker">Guide</span>
+      <p class="lede">Bulk Image Resizer Pro is a free, browser-based tool for resizing, compressing and converting JPG, PNG and WEBP images in batches. This guide explains how it works, how to get the best results, and why nothing you upload ever leaves your device.</p>
+
+      <div class="article-block">
+        <h2>What is bulk image resizing?</h2>
+        <p>Bulk image resizing is the process of changing the dimensions, format, or quality of many images at once instead of adjusting each file individually. Rather than opening a photo editor, resizing one picture, exporting it, and repeating the process for dozens or hundreds of files, a bulk resizer lets you set a target width, height, quality, and output format once and apply it across an entire batch of photos, screenshots, product shots, or graphics.</p>
+        <p>This tool follows exactly that workflow: drop in a folder's worth of images, adjust dimensions and quality per image or across the whole set, watch the estimated file size update live, and export everything as individual downloads or as a single ZIP archive. It's built for anyone who regularly needs many images prepared to the same specification — and because it runs directly in your browser, there's no waiting on uploads to, or downloads from, a remote server.</p>
+      </div>
+
+      <div class="article-block">
+        <h2>How to resize JPG, PNG, and WEBP images</h2>
+        <p>Each format behaves a little differently, and this tool handles all three using the browser's built-in canvas rendering engine — no plugins or external services required.</p>
+
+        <h3>Resizing JPG photos</h3>
+        <p>JPG (or JPEG) is the standard format for photographs because it uses lossy compression to keep file sizes small. When you resize a JPG here, the image is redrawn at your chosen dimensions and re-encoded using the quality slider. Because JPG doesn't support transparency, any transparent areas are automatically given a white background during export.</p>
+
+        <h3>Resizing PNG graphics</h3>
+        <p>PNG is a lossless format that preserves sharp edges and transparency, which makes it the right choice for logos, icons, screenshots, and illustrations with flat colors or text. Resizing a PNG changes its dimensions without recompressing pixel data the way JPG does, so PNG output tends to stay larger than an equivalent JPG. There's no quality slider for PNG since the format doesn't use adjustable lossy compression.</p>
+
+        <h3>Resizing WEBP files</h3>
+        <p>WEBP is a modern web format that supports both lossy and lossless compression plus transparency, usually at a smaller file size than an equivalent JPG or PNG. If your target is web pages, WEBP is often the best balance between visual quality and load time, and this tool can convert any JPG or PNG into WEBP as part of the resize step.</p>
+
+        <p>To resize an image, drag it (or a whole folder) into the drop zone, adjust the width and height fields, choose an output format, and use the quality slider to balance clarity against file size. The live size estimate next to each image updates as you type, so you can see the result before downloading anything.</p>
+      </div>
+
+      <div class="article-block">
+        <h2>Maintain aspect ratio</h2>
+        <p>Aspect ratio is the relationship between an image's width and height — for example, a 4:3 photo or a 1:1 square. Stretching or squashing an image by changing width and height independently distorts faces, logos, and straight lines in ways that are hard to undo. Each image card includes a link toggle next to its dimension fields: when it's on, changing the width automatically recalculates the height (and vice versa) to keep the original proportions intact; when it's off, width and height can be set independently, which is useful when you deliberately need to fit a fixed banner size but isn't recommended for general photo resizing.</p>
+        <p>For most use cases — thumbnails, product photos, social posts — keeping aspect ratio locked is the safest choice, and it's the default state for every newly added image.</p>
+      </div>
+
+      <div class="article-block">
+        <h2>Quality vs file size</h2>
+        <p>Resizing changes an image's pixel dimensions, but the quality slider changes how much detail is kept when re-encoding it. Lossy formats like JPG and WEBP work by discarding visual information that's hard for the human eye to notice, and the amount discarded is controlled by a quality percentage. A higher setting keeps more detail and produces a larger file; a lower setting produces a smaller file at the cost of visible artifacts, especially around sharp edges and text.</p>
+        <p>There's no single correct quality value — it depends on what the image is for. A large hero image on a landing page usually benefits from a higher quality setting, while thumbnails, gallery previews, or reference images can often be compressed more aggressively without anyone noticing the difference. Because this tool shows a live estimated file size next to each image as you move the slider, you can find the smallest file size that still looks acceptable for its intended use, rather than guessing and re-exporting repeatedly.</p>
+      </div>
+
+      <div class="article-block">
+        <h2>Why this tool is privacy-friendly</h2>
+        <p>Every resize, compression, and format conversion in this tool happens locally, inside your own browser, using the HTML5 canvas API. Your image files are never uploaded to a server, never transmitted over a network, and never stored anywhere outside your device. When you drop an image in, it's loaded into memory, drawn onto a canvas at your chosen dimensions, and re-encoded — all of that happens using your own computer's hardware. Once you close the tab or clear the workspace, the images are gone.</p>
+        <p>The only externally loaded resource, besides the page itself, is a small library called JSZip, which is used purely to package your already-processed images into a ZIP file when you choose "Download all as ZIP." It does not send any image data anywhere. This local-first design means the tool keeps working even if your connection drops mid-session, and it means anyone handling private product photography, unreleased designs, personal photos, or client work doesn't have to think about where those files end up.</p>
+      </div>
+
+      <div class="article-block">
+        <h2>Use cases for designers, e-commerce, and social media</h2>
+        <p>Because it processes images in batches directly in the browser, this tool fits naturally into a few everyday workflows:</p>
+        <div class="usecase-grid">
+          <div class="usecase-card">
+            <h3>🎨 Designers</h3>
+            <p>Batch-export mockups, icons, and assets at multiple sizes without re-exporting from a design tool each time, and convert PNG exports to WEBP for lighter portfolio pages.</p>
+          </div>
+          <div class="usecase-card">
+            <h3>🛒 E-commerce sellers</h3>
+            <p>Standardize product photos to a consistent size and file weight across an entire catalog before uploading to a marketplace or storefront, keeping product pages loading quickly.</p>
+          </div>
+          <div class="usecase-card">
+            <h3>📱 Social media &amp; creators</h3>
+            <p>Resize a batch of photos to fit a platform's preferred dimensions and cut file size for faster uploads, without opening a full photo editor for each individual image.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-block">
+        <h2>Frequently asked questions</h2>
+        <div class="faq-list">
+
+          <details class="faq-item">
+            <summary>Do I need to install anything to use this tool?</summary>
+            <div class="faq-answer">No. It runs entirely as a web page in your browser. There's nothing to install and no account to create — just open the page and drop in your images.</div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Are my images ever uploaded to a server?</summary>
+            <div class="faq-answer">No. All resizing, compression, and format conversion happen locally in your browser using canvas rendering. Your files stay on your device throughout the entire process.</div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Is there a limit to how many images I can resize?</summary>
+            <div class="faq-answer">No. You can upload and resize as many images as you like, one at a time or in large batches — there's no daily cap or account requirement.</div>
+          </details>
+
+          <details class="faq-item">
+            <summary>What image formats are supported?</summary>
+            <div class="faq-answer">You can upload JPG, PNG, or WEBP images, and export any of them in any of those three formats, regardless of which format they started in.</div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Will resizing or compressing reduce image quality?</summary>
+            <div class="faq-answer">Changing dimensions alone doesn't degrade quality beyond the resampling itself. Lowering the quality slider on JPG or WEBP output does reduce detail in exchange for a smaller file size — the live size preview helps you find a setting that looks good before you download.</div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Can I resize images without distorting them?</summary>
+            <div class="faq-answer">Yes. Each image has an aspect-ratio lock toggle. When it's enabled, adjusting the width automatically updates the height (and vice versa) so the image is never stretched or squashed.</div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Does this tool work without an internet connection?</summary>
+            <div class="faq-answer">The page and the resizing engine work fully offline once loaded. An internet connection is only used the first time the page loads, and briefly if you use "Download all as ZIP," which relies on a small compression library.</div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Can I download all my resized images at once?</summary>
+            <div class="faq-answer">Yes. The "Download all as ZIP" button packages every processed image in your current workspace into a single ZIP archive in one click.</div>
+          </details>
+
+          <details class="faq-item">
+            <summary>What happens to the PNG quality slider — why is it disabled?</summary>
+            <div class="faq-answer">PNG is a lossless format, so there's no adjustable compression quality the way there is for JPG or WEBP. The slider is disabled automatically when PNG is selected as the output format.</div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Is Bulk Image Resizer Pro free to use?</summary>
+            <div class="faq-answer">Yes. The resizing, compression, and conversion tool is completely free to use, with no upload limits.</div>
+          </details>
+
+        </div>
+      </div>
+
+    </article>
+  </div>
+</div>
+
 <!-- ===================== FOOTER ===================== -->
 <footer class="app-footer">
-  Designed &amp; Developed by <b>PuMita Tech</b>
+  <nav class="footer-nav">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <p class="footer-note">Bulk Image Resizer Pro processes every image locally in your browser. Nothing you upload is ever sent to a server.</p>
+  <p>Designed &amp; Developed by <b>PuMita Tech</b></p>
 </footer>
 
 <!-- Toast notification -->
 <div class="toast" id="toast"></div>
-
-<!-- Daily limit system: premium-style limit / rewarded-video modal -->
-<div class="modal-overlay" id="limitModalOverlay">
-  <div class="modal-card glass" id="limitModalCard">
-    <button class="modal-close" id="limitModalClose" title="Close">✕</button>
-    <div class="modal-icon">🚀</div>
-    <h3>Unlock 20 more uploads</h3>
-    <p id="limitModalMessage">You've used all of today's free uploads.</p>
-    <div class="modal-progress">
-      <div class="modal-progress-fill" id="limitModalProgressFill"></div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn primary" id="limitModalRewardBtn" type="button">🎁 Unlock +20 uploads</button>
-      <button class="btn ghost" id="limitModalCloseBtn" type="button">Maybe later</button>
-    </div>
-    <p class="modal-sub" id="limitModalSub">Rewards watched today: 0 / 5</p>
-  </div>
-</div>
 
 <!-- Hidden canvas used for all resizing / encoding work -->
 <canvas id="workCanvas" style="display:none;"></canvas>
@@ -747,171 +898,7 @@
   const workCanvas                        = document.getElementById('workCanvas');
   const ctx                                 = workCanvas.getContext('2d');
 
-  /* Daily limit system: DOM refs */
-  const statRemaining        = document.getElementById('statRemaining');
-  const rewardBtn             = document.getElementById('rewardBtn');
-  const limitModalOverlay      = document.getElementById('limitModalOverlay');
-  const limitModalClose         = document.getElementById('limitModalClose');
-  const limitModalMessage        = document.getElementById('limitModalMessage');
-  const limitModalProgressFill    = document.getElementById('limitModalProgressFill');
-  const limitModalRewardBtn        = document.getElementById('limitModalRewardBtn');
-  const limitModalCloseBtn          = document.getElementById('limitModalCloseBtn');
-  const limitModalSub                = document.getElementById('limitModalSub');
-
   const MIME = { jpg:'image/jpeg', png:'image/png', webp:'image/webp' };
-
-  /* ============================================================
-     Daily limit system
-     Free-tier usage cap enforced entirely client-side via
-     localStorage — no accounts, no backend. Free users get 100
-     uploads/day; each completed "rewarded video" (simulated) adds
-     +20 uploads for the current day only, up to 5 times (+100 max).
-     Everything resets automatically at the next calendar day.
-  ============================================================ */
-  const DAILY_BASE_LIMIT   = 100;                 /* Daily limit system */
-  const REWARD_BONUS       = 20;                  /* Daily limit system */
-  const MAX_REWARDS_PER_DAY = 5;                  /* Daily limit system */
-  const LIMIT_STORAGE_KEY  = 'pumitaDailyLimitV1'; /* Daily limit system */
-
-  let limitState = null; /* Daily limit system: { date, used, rewardsWatched } */
-
-  /* Daily limit system: today's date as a local YYYY-MM-DD key */
-  function getTodayKey(){
-    const d = new Date();
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    return d.getFullYear() + '-' + mm + '-' + dd;
-  }
-
-  /* Daily limit system: loads state from localStorage, auto-resetting
-     the used count and reward count whenever a new calendar day starts */
-  function loadLimitState(){
-    const today = getTodayKey();
-    let stored = null;
-    try{
-      stored = JSON.parse(localStorage.getItem(LIMIT_STORAGE_KEY) || 'null');
-    }catch(e){
-      stored = null;
-    }
-    if (!stored || stored.date !== today){
-      stored = { date: today, used: 0, rewardsWatched: 0 };
-    }
-    limitState = stored;
-    saveLimitState();
-  }
-
-  /* Daily limit system: persists the current state to localStorage */
-  function saveLimitState(){
-    localStorage.setItem(LIMIT_STORAGE_KEY, JSON.stringify(limitState));
-  }
-
-  /* Daily limit system: today's bonus-adjusted upload cap */
-  function getDailyLimit(){
-    return DAILY_BASE_LIMIT + (limitState.rewardsWatched * REWARD_BONUS);
-  }
-
-  /* Daily limit system: uploads still available today */
-  function getRemainingToday(){
-    return Math.max(0, getDailyLimit() - limitState.used);
-  }
-
-  /* Daily limit system: refreshes the counter, reward button and modal sub-text */
-  function updateLimitUI(){
-    if (!limitState) loadLimitState();
-    const remaining = getRemainingToday();
-    const limit = getDailyLimit();
-
-    if (statRemaining){
-      statRemaining.textContent = remaining + ' / ' + limit;
-      // restart the pulse animation on every update for a smooth "counter tick" feel
-      statRemaining.classList.remove('pulse');
-      void statRemaining.offsetWidth;
-      statRemaining.classList.add('pulse');
-    }
-
-    const rewardsLeft = MAX_REWARDS_PER_DAY - limitState.rewardsWatched;
-    const rewardLabel = rewardsLeft <= 0
-      ? '🎬 Daily reward limit reached'
-      : '🎬 Unlock +' + REWARD_BONUS + ' uploads';
-
-    if (rewardBtn){
-      rewardBtn.disabled = rewardsLeft <= 0;
-      rewardBtn.innerHTML = rewardLabel;
-    }
-    if (limitModalRewardBtn){
-      limitModalRewardBtn.disabled = rewardsLeft <= 0;
-      limitModalRewardBtn.innerHTML = rewardLabel;
-    }
-    if (limitModalSub){
-      limitModalSub.textContent = 'Rewards watched today: ' + limitState.rewardsWatched + ' / ' + MAX_REWARDS_PER_DAY;
-    }
-  }
-
-  /* Daily limit system: opens the premium-style "limit reached" modal */
-  function openLimitModal(message){
-    if (limitModalMessage){
-      limitModalMessage.textContent = message || "You've used all of today's free uploads.";
-    }
-    if (limitModalProgressFill){
-      const pct = Math.min(100, Math.round((limitState.used / getDailyLimit()) * 100));
-      limitModalProgressFill.style.width = pct + '%';
-    }
-    updateLimitUI();
-    limitModalOverlay.classList.add('show');
-  }
-
-  /* Daily limit system: closes the modal */
-  function closeLimitModal(){
-    limitModalOverlay.classList.remove('show');
-  }
-
-  /* Daily limit system: placeholder rewarded-ad hook.
-     No real ad network is wired up yet — this simulates a
-     successful rewarded-video view after a 2 second delay so the
-     reward flow can be integrated with a real SDK later without
-     changing any of the calling code. */
-  function showRewardedAd(onComplete){
-    showToast('Playing rewarded video…');
-    setTimeout(() => {
-      onComplete(true); // simulated ad always completes successfully
-    }, 2000);
-  }
-
-  /* Daily limit system: handles a reward button click end-to-end
-     (works whether triggered from the toolbar or from the modal) */
-  function handleWatchReward(){
-    if (limitState.rewardsWatched >= MAX_REWARDS_PER_DAY){
-      showToast('You already watched the max ' + MAX_REWARDS_PER_DAY + ' videos today.');
-      return;
-    }
-
-    const busyLabel = '⏳ Loading video…';
-    if (rewardBtn){ rewardBtn.disabled = true; rewardBtn.innerHTML = busyLabel; }
-    if (limitModalRewardBtn){ limitModalRewardBtn.disabled = true; limitModalRewardBtn.innerHTML = busyLabel; }
-
-    showRewardedAd((success) => {
-      if (success){
-        limitState.rewardsWatched += 1;
-        saveLimitState();
-        updateLimitUI();
-        showToast('+' + REWARD_BONUS + ' uploads unlocked! 🎉');
-      } else {
-        updateLimitUI();
-        showToast('Video was not completed — no reward granted.');
-      }
-    });
-  }
-
-  rewardBtn.addEventListener('click', handleWatchReward);
-  limitModalRewardBtn.addEventListener('click', handleWatchReward);
-  limitModalClose.addEventListener('click', closeLimitModal);
-  limitModalCloseBtn.addEventListener('click', closeLimitModal);
-  limitModalOverlay.addEventListener('click', (e) => {
-    if (e.target === limitModalOverlay) closeLimitModal(); // click outside the card
-  });
-
-  loadLimitState();
-  updateLimitUI();
 
   /* ============================================================
      UTILITIES
@@ -954,29 +941,7 @@
       return;
     }
 
-    /* Daily limit system: block/trim additions that would exceed today's remaining quota */
-    if (!limitState) loadLimitState();
-    const remaining = getRemainingToday();
-
-    if (remaining <= 0){
-      openLimitModal("You've reached today's free limit of " + getDailyLimit() + ' uploads. Come back tomorrow or watch a video for more.');
-      return;
-    }
-
-    const allowed = files.slice(0, remaining);
-    const blockedCount = files.length - allowed.length;
-
-    allowed.forEach(loadImageFile);
-    limitState.used += allowed.length;
-    saveLimitState();
-    updateLimitUI();
-
-    if (blockedCount > 0){
-      openLimitModal(
-        'Only ' + allowed.length + ' of ' + files.length + ' selected image' + (files.length>1?'s':'') +
-        " were added — you've reached today's free limit of " + getDailyLimit() + ' uploads.'
-      );
-    }
+    files.forEach(loadImageFile);
   }
 
   function loadImageFile(file){
