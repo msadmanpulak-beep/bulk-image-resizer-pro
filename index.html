@@ -235,6 +235,81 @@
   .toolbar .right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
   .toolbar h3{margin:0;font-size:14px;font-weight:600;color:var(--text-1);}
 
+  /* ---------- Global quality control (toolbar) ---------- */
+  .global-quality{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 14px;
+    border-radius:10px;
+    border:1px solid var(--glass-border);
+    background:var(--glass);
+  }
+  .global-quality .gq-label{
+    font-size:12px;
+    font-weight:600;
+    color:var(--text-1);
+    white-space:nowrap;
+  }
+  .global-quality input[type=range]{width:130px;}
+  .global-quality .gq-val{
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--accent-a);
+    min-width:40px;
+    text-align:right;
+  }
+  @media (max-width:640px){
+    .global-quality{width:100%;justify-content:space-between;}
+    .global-quality input[type=range]{flex:1;}
+  }
+
+  /* ---------- Global width/height control (toolbar) ---------- */
+  .global-dims{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    padding:8px 14px;
+    border-radius:10px;
+    border:1px solid var(--glass-border);
+    background:var(--glass);
+  }
+  .global-dims .gq-label{
+    font-size:12px;
+    font-weight:600;
+    color:var(--text-1);
+    white-space:nowrap;
+  }
+  .global-dims .gq-unit{font-size:11px;color:var(--text-2);}
+  .global-dims input[type=number]{width:78px;}
+  @media (max-width:640px){
+    .global-dims{width:100%;justify-content:space-between;}
+    .global-dims input[type=number]{flex:1;width:auto;min-width:64px;}
+  }
+
+  /* ---------- Global output format control (toolbar) ---------- */
+  .global-format{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    padding:8px 14px;
+    border-radius:10px;
+    border:1px solid var(--glass-border);
+    background:var(--glass);
+  }
+  .global-format .gq-label{
+    font-size:12px;
+    font-weight:600;
+    color:var(--text-1);
+    white-space:nowrap;
+  }
+  .global-format select{min-width:88px;}
+  @media (max-width:640px){
+    .global-format{width:100%;justify-content:space-between;}
+  }
+
   .btn{
     display:inline-flex;align-items:center;gap:8px;
     padding:10px 16px;
@@ -701,6 +776,29 @@
   <section class="toolbar glass">
     <div class="left">
       <h3 id="toolbarTitle">No images loaded yet</h3>
+      <div class="global-quality" title="Set quality for all loaded images">
+        <span class="gq-label">Global Quality:</span>
+        <input type="range" id="globalQualityInput" min="1" max="100" value="85">
+        <span class="gq-val" id="globalQualityVal">85%</span>
+      </div>
+      <div class="global-dims" title="Set width & height for all loaded images">
+        <span class="gq-label">Global Width:</span>
+        <input type="number" min="1" max="10000" id="globalWidthInput" placeholder="px">
+        <span class="gq-unit">px</span>
+        <span class="gq-label">Global Height:</span>
+        <input type="number" min="1" max="10000" id="globalHeightInput" placeholder="px">
+        <span class="gq-unit">px</span>
+        <button class="btn sm" id="applyGlobalDimsBtn" type="button">Apply to All</button>
+      </div>
+      <div class="global-format" title="Set output format for all loaded images">
+        <span class="gq-label">Global Output Format:</span>
+        <select id="globalFormatInput">
+          <option value="jpg">JPG</option>
+          <option value="png">PNG</option>
+          <option value="webp">WEBP</option>
+        </select>
+        <button class="btn sm" id="applyGlobalFormatBtn" type="button">Apply to All</button>
+      </div>
     </div>
     <div class="right">
       <button class="btn ghost sm" id="addMoreBtn" type="button">＋ Add more</button>
@@ -878,6 +976,7 @@
                          //   originalSize, url, width, height, linked, quality,
                          //   format, estimatedSize, sizeToken }
   let idCounter = 0;
+  let globalQuality = 85; // default/current quality applied to newly loaded images
 
   /* ============================================================
      DOM REFS
@@ -888,6 +987,13 @@
   const addMoreBtn       = document.getElementById('addMoreBtn');
   const clearAllBtn       = document.getElementById('clearAllBtn');
   const downloadZipBtn     = document.getElementById('downloadZipBtn');
+  const globalQualityInput  = document.getElementById('globalQualityInput');
+  const globalQualityVal     = document.getElementById('globalQualityVal');
+  const globalWidthInput      = document.getElementById('globalWidthInput');
+  const globalHeightInput      = document.getElementById('globalHeightInput');
+  const applyGlobalDimsBtn      = document.getElementById('applyGlobalDimsBtn');
+  const globalFormatInput      = document.getElementById('globalFormatInput');
+  const applyGlobalFormatBtn    = document.getElementById('applyGlobalFormatBtn');
   const grid                = document.getElementById('grid');
   const emptyState            = document.getElementById('emptyState');
   const toolbarTitle            = document.getElementById('toolbarTitle');
@@ -962,7 +1068,7 @@
         width: img.naturalWidth,
         height: img.naturalHeight,
         linked: true,
-        quality: 85,
+        quality: globalQuality,
         format: (ext === 'png' ? 'png' : ext === 'webp' ? 'webp' : 'jpg'),
         estimatedSize: null,
         aspect: img.naturalWidth / img.naturalHeight
@@ -1176,6 +1282,110 @@
     });
   }
 
+  /* ============================================================
+     GLOBAL QUALITY CONTROL
+     Sets the quality for every currently loaded image at once.
+     Individual sliders remain independently editable afterward —
+     this only pushes a one-time value, it does not "link" them.
+  ============================================================ */
+  function applyGlobalQuality(value){
+    globalQuality = value;
+    if (!images.length) return;
+
+    images.forEach(rec => { rec.quality = value; });
+
+    grid.querySelectorAll('.card').forEach(card => {
+      const rec = images.find(r => r.id === card.dataset.id);
+      if (!rec) return;
+      const qInput = card.querySelector('[data-field="quality"]');
+      const qVal = card.querySelector('[data-role="qualityVal"]');
+      if (qInput) qInput.value = rec.quality;
+      if (qVal) qVal.textContent = rec.quality + '%';
+    });
+
+    images.forEach(rec => recomputeSize(rec.id));
+  }
+
+  /* ============================================================
+     GLOBAL WIDTH / HEIGHT CONTROL
+     Applies an entered width and/or height to every currently
+     loaded image, honoring each image's own 🔗 link state:
+     - linked images: whichever of width/height was entered
+       drives the calc, the other side is derived from that
+       image's own aspect ratio (width takes priority if both
+       are entered).
+     - unlinked images: width and height are applied independently.
+     Like the individual controls, this is a one-time push — it
+     does not keep images linked together afterward.
+  ============================================================ */
+  function applyGlobalDimensions(){
+    const wStr = globalWidthInput.value.trim();
+    const hStr = globalHeightInput.value.trim();
+    const w = wStr ? parseInt(wStr, 10) : null;
+    const h = hStr ? parseInt(hStr, 10) : null;
+
+    if ((!w || w < 1) && (!h || h < 1)){
+      showToast('Enter a Global Width and/or Height to apply.');
+      return;
+    }
+    if (!images.length) return;
+
+    images.forEach(rec => {
+      if (rec.linked){
+        if (w && w >= 1){
+          rec.width = w;
+          rec.height = Math.max(1, Math.round(w / rec.aspect));
+        } else if (h && h >= 1){
+          rec.height = h;
+          rec.width = Math.max(1, Math.round(h * rec.aspect));
+        }
+      } else {
+        if (w && w >= 1) rec.width = w;
+        if (h && h >= 1) rec.height = h;
+      }
+    });
+
+    grid.querySelectorAll('.card').forEach(card => {
+      const rec = images.find(r => r.id === card.dataset.id);
+      if (!rec) return;
+      const wInput = card.querySelector('[data-field="width"]');
+      const hInput = card.querySelector('[data-field="height"]');
+      if (wInput) wInput.value = rec.width;
+      if (hInput) hInput.value = rec.height;
+    });
+
+    images.forEach(rec => recomputeSize(rec.id));
+    showToast('Applied dimensions to ' + images.length + ' image' + (images.length>1?'s':'') + '.');
+  }
+
+  /* ============================================================
+     GLOBAL OUTPUT FORMAT CONTROL
+     Sets the output format for every currently loaded image at
+     once. Like Global Quality / Global Width-Height, this is a
+     one-time push — individual dropdowns remain independently
+     editable afterward and images are not permanently linked.
+  ============================================================ */
+  function applyGlobalFormat(value){
+    if (!images.length){
+      showToast('Load some images before applying a global format.');
+      return;
+    }
+
+    images.forEach(rec => { rec.format = value; });
+
+    grid.querySelectorAll('.card').forEach(card => {
+      const rec = images.find(r => r.id === card.dataset.id);
+      if (!rec) return;
+      const formatSelect = card.querySelector('[data-field="format"]');
+      const qualityInput = card.querySelector('[data-field="quality"]');
+      if (formatSelect) formatSelect.value = rec.format;
+      if (qualityInput) qualityInput.disabled = rec.format === 'png';
+    });
+
+    images.forEach(rec => recomputeSize(rec.id));
+    showToast('Applied ' + value.toUpperCase() + ' format to ' + images.length + ' image' + (images.length>1?'s':'') + '.');
+  }
+
   function updateGlobalStats(){
     statCount.textContent = images.length;
     const origTotal = images.reduce((s,r)=>s+(r.originalSize||0),0);
@@ -1310,6 +1520,16 @@
   });
 
   downloadZipBtn.addEventListener('click', downloadAllZip);
+
+  globalQualityInput.addEventListener('input', () => {
+    const v = parseInt(globalQualityInput.value, 10);
+    globalQualityVal.textContent = v + '%';
+    applyGlobalQuality(v);
+  });
+
+  applyGlobalDimsBtn.addEventListener('click', applyGlobalDimensions);
+
+  applyGlobalFormatBtn.addEventListener('click', () => applyGlobalFormat(globalFormatInput.value));
 
 })();
 </script>
